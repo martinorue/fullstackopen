@@ -21,7 +21,7 @@ const Button = (props) => {
 const Stats = (props) => {
   return (
     <div>
-      {props.text} {props.sentiment}
+      {props.text} {props.number}
     </div>
   )
 }
@@ -36,6 +36,10 @@ const App = () => {
   const setToNeutral = newValue => setNeutral(newValue);
   const setToBad = newValue => setBad(newValue);
 
+  const total = good + bad + neutral;
+  const average = total > 0 ? (good - bad) / total : 0;
+  const positives = total > 0 ? good / total * 100 : 0;
+
   return (
     <>
       <Header header={"give feedback"} />
@@ -43,9 +47,12 @@ const App = () => {
       <Button handleClick={() => setToNeutral(neutral + 1)} text="neutral" />
       <Button handleClick={() => setToBad(bad + 1)} text="bad" />
       <Header header={"statistics"} />
-      <Stats text="good" sentiment={good} />
-      <Stats text="neutral" sentiment={neutral} />
-      <Stats text="bad" sentiment={bad} />
+      <Stats text="good" number={good} />
+      <Stats text="neutral" number={neutral} />
+      <Stats text="bad" number={bad} />
+      <Stats text="all" number={total} />
+      <Stats text="average" number={average} />
+      <Stats text="positive" number={positives} />
     </>
   )
 }
