@@ -36,7 +36,7 @@ const Total = (props) => {
   let total = 0;
   props.parts.forEach(element => {
     total += element.exercises
-  });
+  }); //TODO no es mejor usar .length?
   return (
     <>
       <p>Number of exercises {total}</p>
