@@ -1,4 +1,18 @@
-import { useState } from 'react'
+import { useState } from 'react';
+
+const Title = (props) => {
+  return (
+    <h1>{props.text}</h1>
+  )
+}
+
+const Anecdote = (props) => {
+  return (
+    <div>
+      {props.text}
+    </div>
+  )
+}
 
 const Button = (props) => {
   return (
@@ -7,14 +21,6 @@ const Button = (props) => {
         {props.text}
       </button>
     </>
-  )
-}
-
-const Anecdote = (props) => {
-  return (
-    <div>
-      {props.anecdote}
-    </div>
   )
 }
 
@@ -44,16 +50,18 @@ const App = () => {
 
   const nextAnecdote = (newValue) => setSelected(newValue);
 
+  const most_voted = points.indexOf(Math.max(...points));
+
   const setToPoints = () => {
     const copyPoints = [...points];
-    const newValue = copyPoints[selected] + 1;
-    copyPoints[selected] = newValue;
+    copyPoints[selected] += 1;
     setPoints(copyPoints);
   };
 
   return (
     <>
-      <Anecdote anecdote={anecdotes[selected]} />
+      <Title text={"Anecdote of the day"} />
+      <Anecdote text={anecdotes[selected]} />
       <Points text={`has ${points[selected]} votes`} />
       <Button handleClick={() => {
         setToPoints()
@@ -61,6 +69,9 @@ const App = () => {
       <Button handleClick={() => {
         nextAnecdote(getRandomInt(0, 7))
       }} text="next anecdote" />
+      <Title text={"Anecdote with most votes"} />
+      <Anecdote text={anecdotes[most_voted]} />
+      <Points text={`has ${points[most_voted]} votes`} />
     </>
   )
 }
