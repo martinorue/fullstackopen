@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const Title = (props) => {
+const Header = (props) => {
   return (
     <h1>{props.text}</h1>
   )
@@ -60,7 +60,7 @@ const App = () => {
 
   return (
     <>
-      <Title text={"Anecdote of the day"} />
+      <Header text={"Anecdote of the day"} />
       <Anecdote text={anecdotes[selected]} />
       <Points text={`has ${points[selected]} votes`} />
       <Button handleClick={() => {
@@ -69,7 +69,7 @@ const App = () => {
       <Button handleClick={() => {
         nextAnecdote(getRandomInt(0, 7))
       }} text="next anecdote" />
-      <Title text={"Anecdote with most votes"} />
+      <Header text={"Anecdote with most votes"} />
       <Anecdote text={anecdotes[most_voted]} />
       <Points text={`has ${points[most_voted]} votes`} />
     </>
