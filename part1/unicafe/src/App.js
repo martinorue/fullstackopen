@@ -32,16 +32,16 @@ const StatisticLine = (props) => {
 }
 
 const Statistics = (props) => {
-  if (props.msj == '') {
+  if (props.msj === '') {
     return (
       <table>
         <tbody>
-        <StatisticLine text={props.line[0].name} number={props.line[0].value} />
-        <StatisticLine text={props.line[1].name} number={props.line[1].value} />
-        <StatisticLine text={props.line[2].name} number={props.line[2].value} />
-        <StatisticLine text={props.line[3].name} number={props.line[3].value} />
-        <StatisticLine text={props.line[4].name} number={props.line[4].value} />
-        <StatisticLine text={props.line[5].name} number={props.line[5].value + ' %'} />
+          <StatisticLine text={props.line[0].name} number={props.line[0].value} />
+          <StatisticLine text={props.line[1].name} number={props.line[1].value} />
+          <StatisticLine text={props.line[2].name} number={props.line[2].value} />
+          <StatisticLine text={props.line[3].name} number={props.line[3].value} />
+          <StatisticLine text={props.line[4].name} number={props.line[4].value} />
+          <StatisticLine text={props.line[5].name} number={props.line[5].value + ' %'} />
         </tbody>
       </table>
     )

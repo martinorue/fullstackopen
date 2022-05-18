@@ -1,10 +1,12 @@
 import { useState } from 'react'
 
-const Button = () => {
+const Button = (props) => {
   return (
-    <button>
-      holis
-    </button>
+    <>
+      <button onClick={props.handleClick}>
+        {props.text}
+      </button>
+    </>
   )
 }
 
@@ -23,12 +25,21 @@ const App = () => {
     'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients'
   ]
 
-  const [selected, setSelected] = useState(0)
+  const [selected, setSelected] = useState(0);
+
+  const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min)) + min;
+
+  const nextAnecdote = (newValue) => setSelected(newValue);
 
   return (
-    <div>
-      {anecdotes[selected]}
-    </div>
+    <>
+      <div>
+        {anecdotes[selected]}
+      </div>
+      <Button handleClick={() => {
+        nextAnecdote(getRandomInt(0, 7))
+      }} text="next anecdote" />
+    </>
   )
 }
 
