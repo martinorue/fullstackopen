@@ -43,6 +43,13 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <div>
+        filter shown with
+        <input
+        >
+        </input>
+      </div>
+      <h2>add a new</h2>
       <form onSubmit={addPerson}>
         <div>
           name:
