@@ -1,24 +1,7 @@
 import { useState } from 'react'
-
-const Contacts = ({ persons, filteredPersons, filtered }) => {
-  return (
-    <ul>
-      {filtered === '' ?
-        persons.map(p =>
-          <Person key={p.id} name={p.name} phone={p.phone} />)
-        : filteredPersons.map(p =>
-          <Person key={p.id} name={p.name} phone={p.phone} />)}
-    </ul>
-  )
-}
-
-const Person = ({ name, phone }) => {
-  return (
-    <li>
-      {name} {phone}
-    </li>
-  )
-}
+import PersonForm from './components/AddPerson'
+import Persons from './components/Contacts'
+import Filter from './components/Filter'
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -36,7 +19,8 @@ const App = () => {
     event.preventDefault()
     const person = {
       name: newName,
-      phone: newPhone
+      number: newPhone,
+      id: persons.length + 1
     }
     const exist = persons.filter(p => p.name === newName);
     if (exist.length > 0) {
@@ -48,7 +32,7 @@ const App = () => {
     }
   }
 
-  const handleNoteChange = (event) => {
+  const handleNameChange = (event) => {
     setNewName(event.target.value);
   }
 
@@ -61,41 +45,16 @@ const App = () => {
     const regex = new RegExp(filtered, 'i');
     const filteredPersons = persons.filter(person => person.name.match(regex));
     setFilteredPersons(filteredPersons);
-    console.log(filtered);
   }
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>
-        filter shown with
-        <input
-          value={filtered}
-          onChange={handleFilterChange}
-        >
-        </input>
-      </div>
+      <Filter value={filtered} onChange={handleFilterChange} />
       <h2>add a new</h2>
-      <form onSubmit={addPerson}>
-        <div>
-          name:
-          <input
-            value={newName}
-            onChange={handleNoteChange}
-          />
-          <div>number:
-            <input
-              value={newPhone}
-              onChange={handlePhoneChange}
-            />
-          </div>
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <PersonForm onSubmit={addPerson} newName={newName} newPhone={newPhone} handleNameChange={handleNameChange} handlePhoneChange={handlePhoneChange} />
       <h2>Numbers</h2>
-      <Contacts persons={persons} filteredPersons={filteredPersons} filtered={filtered} />
+      <Persons persons={persons} filteredPersons={filteredPersons} filtered={filtered} />
     </div>
   )
 }
