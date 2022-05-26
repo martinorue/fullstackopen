@@ -1,13 +1,24 @@
 import { useState } from 'react'
 
-// const Header = ({ name }) => {
-//   return (
-//     <>
-//       <h1>{name}</h1>
-//     </>
-//   )
-// }
+const Contacts = ({ persons, filteredPersons, filtered }) => {
+  return (
+    <ul>
+      {filtered === '' ?
+        persons.map(p =>
+          <Person key={p.id} name={p.name} phone={p.phone} />)
+        : filteredPersons.map(p =>
+          <Person key={p.id} name={p.name} phone={p.phone} />)}
+    </ul>
+  )
+}
 
+const Person = ({ name, phone }) => {
+  return (
+    <li>
+      {name} {phone}
+    </li>
+  )
+}
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -19,6 +30,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newPhone, setNewPhone] = useState('')
   const [filtered, setFiltered] = useState('')
+  const [filteredPersons, setFilteredPersons] = useState([])
 
   const addPerson = (event) => {
     event.preventDefault()
@@ -46,9 +58,10 @@ const App = () => {
 
   const handleFilterChange = (event) => {
     setFiltered(event.target.value);
-    // const regex = new RegExp( newFilter, 'i' );
-    // const filteredPersons = () => allPersons.filter(person => person.name.match(regex))
-    // setPersons(filteredPersons)
+    const regex = new RegExp(filtered, 'i');
+    const filteredPersons = persons.filter(person => person.name.match(regex));
+    setFilteredPersons(filteredPersons);
+    console.log(filtered);
   }
 
   return (
@@ -82,11 +95,7 @@ const App = () => {
         </div>
       </form>
       <h2>Numbers</h2>
-      <ul>
-        {persons.map((p) => p.name.toLowerCase().startsWith(filtered.toLowerCase()) ? 
-        <li key={p.id}>{p.name} {p.phone}</li>: 
-        '')}
-      </ul>
+      <Contacts persons={persons} filteredPersons={filteredPersons} filtered={filtered} />
     </div>
   )
 }
