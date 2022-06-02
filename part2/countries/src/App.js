@@ -4,7 +4,6 @@ import Filter from './components/Filter'
 import FilteredCountries from './components/FilteredCountries'
 
 function App() {
-
   useEffect(() => {
     axios
       .get('https://restcountries.com/v3.1/all')
@@ -12,6 +11,8 @@ function App() {
         setCountries(response.data)
       })
   }, [])
+
+
 
   const [countries, setCountries] = useState([])
   const [filtered, setFiltered] = useState([])
@@ -27,7 +28,7 @@ function App() {
   return (
     <div>
       <Filter value={filtered} onChange={handleFilterChange} />
-      <FilteredCountries filteredCountries={filteredCountries} setFilteredCountries={setFilteredCountries}/>
+      <FilteredCountries filteredCountries={filteredCountries} setFilteredCountries={setFilteredCountries} />
     </div>
 
   );
