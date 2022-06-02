@@ -22,8 +22,8 @@ const FilteredCountries = ({ filteredCountries, setFilteredCountries }) => {
         return (
             <div>
                 <ul>
-                    {filteredCountries.map(c => <li key={c.ccn3}> {c.name.common}
-                        <button onClick={() => setFilteredCountries([c])}>show</button></li>)}
+                    {filteredCountries.map(c => <li key={c.cca2+c.ccn3}> {c.name.common}
+                    <Button text='show' handleClick={() => setFilteredCountries([c])}/></li>)}
                 </ul>
             </div>
         )
