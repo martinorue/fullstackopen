@@ -16,5 +16,11 @@ const update = (id, newObject) => {
     return request.then(response => response.data)
 }
 
+//localhost:3001/persons/2
+const remove = (id) => {
+    const request = axios.delete(`${baseUrl}/${id}`)
+    return request.then(response => response.data)
+}
+
 // eslint-disable-next-line import/no-anonymous-default-export
-export default { getAll, create, update }
+export default { getAll, create, update, remove }

@@ -5,6 +5,11 @@ import Filter from './components/Filter'
 import personService from './services/Persons'
 
 const App = () => {
+  const [persons, setPersons] = useState([])
+  const [newName, setNewName] = useState('')
+  const [newPhone, setNewPhone] = useState('')
+  const [filtered, setFiltered] = useState('')
+  const [filteredPersons, setFilteredPersons] = useState([])
 
   useEffect(() => {
     personService
@@ -12,13 +17,8 @@ const App = () => {
       .then(initialPersons => {
         setPersons(initialPersons)
       })
-  }, [])
+  }, [])//[persons]
 
-  const [persons, setPersons] = useState([])
-  const [newName, setNewName] = useState('')
-  const [newPhone, setNewPhone] = useState('')
-  const [filtered, setFiltered] = useState('')
-  const [filteredPersons, setFilteredPersons] = useState([])
 
   const addPerson = (event) => {
     event.preventDefault()
@@ -55,6 +55,16 @@ const App = () => {
     setFilteredPersons(filteredPersons);
   }
 
+  const handleDeleteContact = (id) => {
+    const person = persons.find(p => p.id === id);
+    if (window.confirm(`Delete ${person.name}?`)) {
+      personService
+        .remove(id).then(
+          setPersons(persons.filter(p => p.id !== id))
+        )
+    }
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -62,7 +72,7 @@ const App = () => {
       <h2>add a new</h2>
       <PersonForm onSubmit={addPerson} newName={newName} newPhone={newPhone} handleNameChange={handleNameChange} handlePhoneChange={handlePhoneChange} />
       <h2>Numbers</h2>
-      <Contacts persons={persons} filteredPersons={filteredPersons} filtered={filtered} />
+      <Contacts persons={persons} deleteContact={handleDeleteContact} filteredPersons={filteredPersons} filtered={filtered} />
     </div>
   )
 }
