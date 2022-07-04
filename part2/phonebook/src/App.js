@@ -11,7 +11,8 @@ const App = () => {
   const [newPhone, setNewPhone] = useState('')
   const [filtered, setFiltered] = useState('')
   const [filteredPersons, setFilteredPersons] = useState([])
-  const [successMessage, setSuccessMessage] = useState(null)
+  const [Message, setMessage] = useState(null)
+  const [msjType, setMsjType] = useState()
 
   useEffect(() => {
     personService
@@ -39,6 +40,9 @@ const App = () => {
             setPersons(persons.map(p => p.id !== person.id ? p : response))
             setNewName('')
             setNewPhone('')
+          }).catch(error => {
+            setMsjType('error');
+            setMessage(`${newName} was already removed from server`);
           })
       }
     } else {
@@ -53,14 +57,15 @@ const App = () => {
           setNewName('')
           setNewPhone('')
         })
+      setMsjType('success');
+      setMessage(
+        `Added ${newName}`
+      )
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
     }
 
-    setSuccessMessage(
-      `Added ${newName}`
-    )
-    setTimeout(() => {
-      setSuccessMessage(null)
-    }, 5000)
   }
 
   const handleNameChange = (event) => {
@@ -91,7 +96,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={successMessage} />
+      <Notification message={Message} type={msjType} />
       <Filter value={filtered} onChange={handleFilterChange} />
       <h2>add a new</h2>
       <PersonForm onSubmit={addPerson} newName={newName} newPhone={newPhone} handleNameChange={handleNameChange} handlePhoneChange={handlePhoneChange} />

@@ -1,7 +1,11 @@
-const Notification = ({ message }) => {
+const Notification = ({ message, type }) => {
 
+    let color = 'green';
+    if (type === 'error') {
+        color = 'red';
+    }
     const notificationStyle = {
-        color: 'green',
+        color: color,
         background: 'lightgrey',
         fontSize: 20,
         borderStyle: 'solid',
