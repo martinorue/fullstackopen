@@ -1,5 +1,5 @@
 import axios from 'axios'
-const baseUrl = 'https://abracadabrant-choucroute-92935.herokuapp.com/api/persons'
+const baseUrl = '/api/persons'
 
 //npx json-server --watch db.json
 
