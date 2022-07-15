@@ -1,5 +1,7 @@
 import axios from 'axios'
-const baseUrl = 'http://localhost:3001/persons'
+const baseUrl = '/api/persons'
+
+//npx json-server --watch db.json
 
 const getAll = () => {
     const request = axios.get(baseUrl)
