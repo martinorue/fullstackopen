@@ -33,7 +33,7 @@ const App = () => {
         const person = {
           name: person_exist[0].name,
           number: newPhone,
-          id: person_exist[0].id
+          // id: person_exist[0].id
         }
         personService.update(person.id, person)
           .then(response => {
@@ -56,6 +56,9 @@ const App = () => {
           setPersons(persons.concat(response))
           setNewName('')
           setNewPhone('')
+        }).catch(error => {
+          setMsjType('error')
+          setMessage(`${error.response.data.error}`)
         })
       setMsjType('success');
       setMessage(
