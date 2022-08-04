@@ -25,27 +25,47 @@ const App = () => {
 
   const addPerson = (event) => {
     event.preventDefault()
-    
-    const new_person = {
-      name: newName,
-      number: newPhone,
+
+    const person_exist = persons.filter(p => p.name === newName);
+
+    if (person_exist.length > 0) {
+      if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
+        const person = {
+          name: person_exist[0].name,
+          number: newPhone,
+        }
+        personService.update(person.id, person)
+          .then(response => {
+            setPersons(persons.map(p => p.id !== person.id ? p : response))
+            setNewName('')
+            setNewPhone('')
+          }).catch(error => {
+            setMsjType('error');
+            setMessage(`${newName} was already removed from server`);
+          })
+      }
+    } else {
+      const new_person = {
+        name: newName,
+        number: newPhone,
+      }
+      personService
+        .create(new_person)
+        .then(createdPerson => {
+          setNewName('')
+          setNewPhone('')
+          setMsjType('success');
+          setPersons(persons.concat(createdPerson))
+          setMessage(`Added ${newName}`)
+          setTimeout(() => {
+            setMessage(null)
+          }, 5000)
+        })
+        .catch(error => {
+          setMsjType('error')
+          setMessage(error.response.data.error)
+        })
     }
-    personService
-    .create(new_person)
-      .then(createdPerson => {
-        setNewName('')
-        setNewPhone('')
-        setMsjType('success');
-        setPersons(persons.concat(createdPerson))
-        setMessage(`Added ${newName}`)
-        setTimeout(() => {
-          setMessage(null)
-        }, 5000)
-      })
-      .catch(error => {
-        setMsjType('error')
-        setMessage(error.response.data.error)
-      })
   }
 
   const handleNameChange = (event) => {
