@@ -20,23 +20,22 @@ const App = () => {
       .then(initialPersons => {
         setPersons(initialPersons)
       })
-  }, [])//[persons] --> ¿¿otra forma de que actualice persons sin necesidad de setPersons(persons.filter(p => p.id !== id))??
-
+  }, [])
 
   const addPerson = (event) => {
     event.preventDefault()
 
-    const person_exist = persons.filter(p => p.name === newName);
+    const person_duplicated = persons.filter(p => p.name === newName);
+    const person_exist = person_duplicated[0];
 
-    if (person_exist.length > 0) {
+    if (person_duplicated.length > 0) {
       if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
-        const person = {
-          name: person_exist[0].name,
-          number: newPhone,
-        }
-        personService.update(person.id, person)
+        
+        const person = { ...person_exist, number: newPhone}
+        
+        personService.update(person_exist.id, person)
           .then(response => {
-            setPersons(persons.map(p => p.id !== person.id ? p : response))
+            setPersons(persons.map(p => p.id !== person_exist.id ? p : response))
             setNewName('')
             setNewPhone('')
           }).catch(error => {
