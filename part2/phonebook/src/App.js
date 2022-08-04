@@ -36,11 +36,13 @@ const App = () => {
         setNewName('')
         setNewPhone('')
         setMsjType('success');
+        setPersons(persons.concat(createdPerson))
         setMessage(`Added ${newName}`)
         setTimeout(() => {
           setMessage(null)
         }, 5000)
-      }).catch(error => {
+      })
+      .catch(error => {
         setMsjType('error')
         setMessage(error.response.data.error)
       })
