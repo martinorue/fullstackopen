@@ -21,12 +21,13 @@ blogsRouter.get('/:id', (request, response, next) => {
 })
 
 blogsRouter.post('/', (request, response, next) => {
-    const body = request.body
+    const {title, author, url, likes} = request.body
 
     const blog = new Blog({
-        content: body.content,
-        important: body.important || false,
-        date: new Date(),
+        title: title,
+        author: author,
+        url: url,
+        likes: likes
     })
 
     blog.save()
@@ -45,11 +46,13 @@ blogsRouter.delete('/:id', (request, response, next) => {
 })
 
 blogsRouter.put('/:id', (request, response, next) => {
-    const body = request.body
+    const {title, author, url, likes} = request.body
 
     const blog = {
-        content: body.content,
-        important: body.important,
+        title: title,
+        author: author,
+        url: url,
+        likes: likes,
     }
 
     Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
