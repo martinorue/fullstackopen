@@ -24,6 +24,12 @@ const favoriteBlog = (blogs) => {
     }
 }
 
+const mostBlogs = (blogs_arr) => {
+
+    // const ret = { author: "Robert C. Martin", blogs: 3 }
+
+}
+
 module.exports = {
     dummy,
     totalLikes,
