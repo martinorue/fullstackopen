@@ -1,9 +1,5 @@
 const _ = require("lodash");
 
-const dummy = (blogs) => {
-    return 1
-}
-
 const totalLikes = (blogs) => {
     const reducer = (sum, item) => {
         return sum + item.likes
@@ -28,7 +24,7 @@ const favoriteBlog = (blogs) => {
 
 const mostBlogs = (blogs) => {
 
-    const grouped = Object.entries(_.countBy(blogs, 'author')).sort((a, b) => { a[1] - b[1] })
+    const grouped = Object.entries(_.countBy(blogs, 'author')).sort((a, b) => a[1] - b[1])
 
     const last_author = grouped[grouped.length - 1]
 
@@ -38,12 +34,45 @@ const mostBlogs = (blogs) => {
     }
 
     return prolific
-
 }
+
+const mostLikes = (blogs) => {//vanilla
+
+    const groupBy = (objectArray, property) => {
+        return objectArray.reduce((acc, item) => {
+            const key = item[property];
+            if (!acc[key]) {
+                acc[key] = [];
+            }
+            acc[key].push(item.likes);
+            return acc;
+        }, {});
+    }
+
+    const grouped = groupBy(blogs, 'author');
+
+    const arr_ret = []
+    for (const a in grouped) {
+        arr_ret.push({
+            author: a,
+            likes: grouped[a].reduce((acc, item) => acc + item)
+        })
+    }
+
+    const reducer = (max, item) => {
+        return item.likes > max ? max = item.likes : max;
+    }
+    const maxLikes = arr_ret.reduce(reducer, arr_ret[0].likes)
+    const ret = arr_ret.find(author => author.likes === maxLikes)
+
+    return ret
+}
+
 
 module.exports = {
     dummy,
     totalLikes,
     favoriteBlog,
-    mostBlogs
+    mostBlogs,
+    mostLikes
 }
