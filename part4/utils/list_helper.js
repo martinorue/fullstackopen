@@ -1,3 +1,5 @@
+const _ = require("lodash");
+
 const dummy = (blogs) => {
     return 1
 }
@@ -24,14 +26,24 @@ const favoriteBlog = (blogs) => {
     }
 }
 
-const mostBlogs = (blogs_arr) => {
+const mostBlogs = (blogs) => {
 
-    // const ret = { author: "Robert C. Martin", blogs: 3 }
+    const grouped = Object.entries(_.countBy(blogs, 'author')).sort((a, b) => { a[1] - b[1] })
+
+    const last_author = grouped[grouped.length - 1]
+
+    const prolific = {
+        author: last_author[0],
+        blogs: last_author[1]
+    }
+
+    return prolific
 
 }
 
 module.exports = {
     dummy,
     totalLikes,
-    favoriteBlog
+    favoriteBlog,
+    mostBlogs
 }
