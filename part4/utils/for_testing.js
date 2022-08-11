@@ -68,7 +68,6 @@ const mostLikes = (blogs) => {//vanilla
     return ret
 }
 
-
 module.exports = {
     totalLikes,
     favoriteBlog,
