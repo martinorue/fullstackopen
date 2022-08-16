@@ -8,7 +8,6 @@ const api = supertest(app)
 const Blog = require('../models/blog')
 
 beforeEach(async () => {
-    console.log('deleting...')
     await Blog.deleteMany({})
     await Blog.insertMany(testHelper.blogs)
 }, 300000)
@@ -19,6 +18,11 @@ test('blogs are returned as json', async () => {
         .expect(200)
         .expect('Content-Type', /application\/json/)
 }, 100000)
+
+test('unique identifier property is named id', async () => {
+    const response = await api.get('/api/blogs')
+    response.body.forEach(blog => expect(blog.id).toBeDefined())
+})
 
 afterAll(() => {
     mongoose.connection.close()
