@@ -11,7 +11,7 @@ const mongoose = require('mongoose')
 // const mongoUrl = 'mongodb://localhost/bloglist'
 
 logger.info('connecting to', config.MONGODB_URI)
-
+console.log('connecting...')
 mongoose.connect(config.MONGODB_URI)
     .then(() => {
         logger.info('connected to MongoDB')
