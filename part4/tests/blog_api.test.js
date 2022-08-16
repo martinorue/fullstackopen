@@ -14,13 +14,13 @@ beforeEach(async () => {
 
 test('blogs are returned as json', async () => {
     await api
-        .get('/api/blogs')
+        .get('/api/testBlogs')
         .expect(200)
         .expect('Content-Type', /application\/json/)
 }, 100000)
 
 test('unique identifier property is named id', async () => {
-    const response = await api.get('/api/blogs')
+    const response = await api.get('/api/testBlogs')
     response.body.forEach(blog => expect(blog.id).toBeDefined())
 })
 
