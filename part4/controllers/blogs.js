@@ -10,13 +10,13 @@ blogsRouter.get('/', async (request, response) => {
 blogsRouter.get('/:id', async (request, response) => {
     const blog = await Blog.findById(request.params.id)
     if (blog) {
-        response.json(blog)
+        response.json(blog.toJSON())
     } else {
         response.status(404).end()
     }
 })
 
-blogsRouter.post('/', (request, response, next) => {
+blogsRouter.post('/', async (request, response) => {
     const { title, author, url, likes } = request.body
 
     const blog = new Blog({
@@ -26,11 +26,9 @@ blogsRouter.post('/', (request, response, next) => {
         likes: likes
     })
 
-    blog.save()
-        .then(savedBlog => {
-            response.json(savedBlog)
-        })
-        .catch(error => next(error))
+    const savedBlog = await blog.save()
+
+    response.status(201).json(savedBlog)
 })
 
 blogsRouter.delete('/:id', async (request, response) => {//with express-async-errors
