@@ -63,6 +63,17 @@ test('missing like property it will default to cero', async () => {
     expect(response.body.likes === 0)
 })
 
+test('!title and !url responds 400 Bad Request', async () => {
+    const blog = {
+        author: 'testTitle&Url',
+        likes: 10
+    }
+
+    await api.post('/api/testBlogs')
+        .send(blog)
+        .expect(400)
+})
+
 afterAll(() => {
     mongoose.connection.close()
 })
