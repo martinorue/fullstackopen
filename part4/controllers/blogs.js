@@ -40,7 +40,7 @@ blogsRouter.delete('/:id', async (request, response) => {//with express-async-er
     response.status(204).end()
 })
 
-blogsRouter.put('/:id', (request, response, next) => {
+blogsRouter.put('/:id', async (request, response) => {
     const { title, author, url, likes } = request.body
 
     const blog = {
@@ -50,11 +50,8 @@ blogsRouter.put('/:id', (request, response, next) => {
         likes: likes,
     }
 
-    Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
-        .then(updatedBlog => {
-            response.json(updatedBlog)
-        })
-        .catch(error => next(error))
+    const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
+    response.json(updatedBlog)
 })
 
 module.exports = blogsRouter
