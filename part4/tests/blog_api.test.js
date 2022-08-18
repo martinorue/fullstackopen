@@ -46,7 +46,21 @@ test('creating a new blog is successful', async () => {
 
     const titles = response.map(b => b.title)
     expect(titles).toContain('newBlogTest')
-    expect(response)
+})
+
+test('missing like property it will default to cero', async () => {
+    const blog = {
+        title: 'testLikeDefaultCero',
+        author: 'testLikeDefaultCero',
+        url: 'testLikeDefaultCero',
+    }
+
+    const response = await api.post('/api/testBlogs')
+        .send(blog)
+        .expect(201)
+        .expect('Content-Type', /application\/json/)
+
+    expect(response.body.likes === 0)
 })
 
 afterAll(() => {
