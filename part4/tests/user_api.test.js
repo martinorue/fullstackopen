@@ -21,9 +21,9 @@ describe('when there is initially one user in db', () => {
         const usersAtStart = await testHelper.usersInDb()
 
         const newUser = {
-            username: 'mluukkai',
-            name: 'Matti Luukkainen',
-            password: 'salainen',
+            username: 'martinorue',
+            name: 'Martin Orue',
+            password: 'cremapastelera',
         }
 
         await api
@@ -132,8 +132,9 @@ describe('when there is initially some users saved', () => {
         const usersAtEnd = await testHelper.usersInDb()
         expect(usersAtEnd).toHaveLength(usersAtStart.length)
     })
-
 })
+
+
 
 afterAll(() => {
     mongoose.connection.close()
