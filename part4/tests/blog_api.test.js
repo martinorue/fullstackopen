@@ -85,20 +85,34 @@ describe('when there is initially some blogs saved', () => {
 
     test('deleting a blog with existing id responds 204', async () => {
 
-        // const existingBlog = blogs[0]
-        const response = await testHelper.blogsInDb()
-        console.log(response.length)//6
+        const bolgsAtFirst = await testHelper.blogsInDb()
+
+        const blog = {
+            title: 'ketchup',
+            author: 'martinorue',
+            url: 'ketchup.com',
+            likes: 1200,
+        }
+
+        const response = await api
+            .post('/api/testBlogs')
+            .send(blog)
+            .set('authorization', `bearer ${TOKEN}`)
+            .expect(201)
+            .expect('Content-Type', /application\/json/)
+
+        const blog_id = response.body.id.toString()
+
         await api
-            .delete('/api/testBlogs/63053c752b3d9402ad40a7d9')
+            .delete(`/api/testBlogs/${blog_id}`)
             .set('authorization', `bearer ${TOKEN}`)
             .expect(204)
 
         const blogsAtEnd = await testHelper.blogsInDb()
-        console.log(blogsAtEnd.length)
-        expect(blogsAtEnd).toHaveLength(response.length - 1)
+        expect(blogsAtEnd).toHaveLength(bolgsAtFirst.length)
 
-        const titles = response.map(b => b.title)
-        expect(titles).not.toContain('crema pastelera')
+        const titles = bolgsAtFirst.map(b => b.title)
+        expect(titles).not.toContain('ketchup')
     })
 
     test('deleting a blog with non existing id responds 204', async () => {
