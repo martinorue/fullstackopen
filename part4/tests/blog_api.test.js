@@ -22,7 +22,6 @@ describe('when there is initially some blogs saved', () => {
             .expect(200)
             .expect('Content-Type', /application\/json/)
 
-        console.log(blogs.body)
     }, 100000)
 
     test('unique identifier property is named id', async () => {
@@ -31,7 +30,6 @@ describe('when there is initially some blogs saved', () => {
     })
 
     test('creating a new blog is successful', async () => {
-        console.log(TOKEN)
 
         const blog = {
             title: 'crema pastelera',
@@ -43,7 +41,7 @@ describe('when there is initially some blogs saved', () => {
         await api
             .post('/api/testBlogs')
             .send(blog)
-            .set('authorization', `bearer ${TOKEN}`)
+            .set('Authorization', `bearer ${TOKEN}`)
             .expect(201)
             .expect('Content-Type', /application\/json/)
 
@@ -53,7 +51,7 @@ describe('when there is initially some blogs saved', () => {
 
         const titles = response.map(b => b.title)
         expect(titles).toContain('crema pastelera')
-    })
+    }, 10000)
 
     test('missing like property it will default to cero', async () => {
         const blog = {

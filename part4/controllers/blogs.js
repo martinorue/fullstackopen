@@ -1,8 +1,6 @@
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
 
-const userExtractor = require('../utils/middleware').userExtractor
-
 blogsRouter.get('/', async (request, response) => {
     const blogs = await Blog
         .find({}).populate('user', { username: 1, name: 1 })
@@ -18,11 +16,10 @@ blogsRouter.get('/:id', async (request, response) => {
     }
 })
 
-blogsRouter.post('/', userExtractor, async (request, response) => {
+blogsRouter.post('/', async (request, response) => {
     const { title, author, url, likes } = request.body
 
     const user = request.user
-
     if (!title && !url) {
         response.status(400).end()
     }
@@ -42,7 +39,7 @@ blogsRouter.post('/', userExtractor, async (request, response) => {
     response.status(201).json(savedBlog)
 })
 
-blogsRouter.delete('/:id', userExtractor, async (request, response) => {//with express-async-errors
+blogsRouter.delete('/:id', async (request, response) => {//with express-async-errors
 
     const user = request.user
     const blog = await Blog.findById(request.params.id)
