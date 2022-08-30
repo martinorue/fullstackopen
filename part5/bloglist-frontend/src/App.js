@@ -51,7 +51,7 @@ const App = () => {
       // setPassword('')
     } catch (exception) {
       setMsjType('error')
-      setMessage('Wrong credentials')
+      setMessage('wrong username or password')
       setTimeout(() => {
         setMessage(null)
       }, 5000)
@@ -72,7 +72,13 @@ const App = () => {
     }
     try {
       const res = await blogService.create(newBlog)
-      setBlogs(blogs.concat(newBlog))
+      console.log(res)
+      setBlogs(blogs.concat(res))
+      setMsjType('ok')
+      setMessage(`added ${newBlog.title} by ${newBlog.author}`)
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
     } catch (error) {
       setMsjType('error')
       setMessage(error.response.data.error)
@@ -96,9 +102,9 @@ const App = () => {
           <p>{user.name} logged in <button onClick={handleLogout}>logout</button></p>
           <h2>create new</h2>
           <NewBlogForm title={title} author={author} url={url} handleNewBlog={handleNewBlog} setTitle={setTitle} setAuthor={setAuthor} setUrl={setUrl} />
-          {blogs.map(blog =>
-            <Blog key={blog.id} blog={blog} />
-          )}
+          <ul>
+            {blogs.map(blog => <li key={blog.id}> <Blog blog={blog} /></li>)}
+          </ul>
         </div>}
     </div>
   )
