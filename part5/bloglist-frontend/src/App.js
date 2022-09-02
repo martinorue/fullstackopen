@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
-import Login from './components/Login'
+import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import NewBlogForm from './components/NewBlogForm'
+import Togglable from './components/Togglable'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -13,9 +14,7 @@ const App = () => {
   const [password, setPassword] = useState('dreamtheater')
   const [message, setMessage] = useState(null)
   const [msjType, setMsjType] = useState()
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
+
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -32,7 +31,7 @@ const App = () => {
     }
   }, [])
 
-  const handleLogin = async (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
     console.log('logging in with', username, password)
 
@@ -63,19 +62,14 @@ const App = () => {
     window.localStorage.clear()
   }
 
-  const handleNewBlog = async (event) => {
-    event.preventDefault()
-    const newBlog = {
-      title: title,
-      author: author,
-      url: url
-    }
+  const addBlog = async (blogObject) => {
+    newBlogFormRef.current.toggleVisibility()
     try {
-      const res = await blogService.create(newBlog)
+      const res = await blogService.create(blogObject)
       console.log(res)
       setBlogs(blogs.concat(res))
       setMsjType('ok')
-      setMessage(`added ${newBlog.title} by ${newBlog.author}`)
+      setMessage(`added ${blogObject.title} by ${blogObject.author}`)
       setTimeout(() => {
         setMessage(null)
       }, 5000)
@@ -88,20 +82,22 @@ const App = () => {
     }
   }
 
+  const newBlogFormRef = useRef()
+
   return (
     <div>
       <Notification message={message} msjType={msjType} />
       {user === null ?
         <div>
-          <h2>Log in to application</h2>
-          <Login username={username} password={password} handleLogin={handleLogin} setUsername={setUsername} setPassword={setPassword} />
+          <LoginForm username={username} password={password} handleSubmit={handleSubmit} handleUsernameChange={({ target }) => setUsername(target.value)} handlePasswordChange={({ target }) => setPassword(target.value)} />
         </div>
         :
         <div>
           <h2>blogs</h2>
           <p>{user.name} logged in <button onClick={handleLogout}>logout</button></p>
-          <h2>create new</h2>
-          <NewBlogForm title={title} author={author} url={url} handleNewBlog={handleNewBlog} setTitle={setTitle} setAuthor={setAuthor} setUrl={setUrl} />
+          <Togglable buttonLabel="new blog" refs={newBlogFormRef}>
+            <NewBlogForm createBlog={addBlog} />
+          </Togglable>
           <ul>
             {blogs.map(blog => <li key={blog.id}> <Blog blog={blog} /></li>)}
           </ul>
