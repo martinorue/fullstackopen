@@ -1,8 +1,8 @@
 import { useState } from "react"
 
-const Blog = ({ blog }) => {
-
+const Blog = ({ blog, updateBlog }) => {
   const [infoVisible, setInfoVisible] = useState(false)
+  const [likedBlog, setLikedBlog] = useState(blog)
 
   const blogStyle = {
     paddingTop: 10,
@@ -20,6 +20,17 @@ const Blog = ({ blog }) => {
     setInfoVisible(!infoVisible)
   }
 
+  const addLike = async (blog) => {
+
+    const blogToUpdate = {
+      ...blog,
+      likes: blog.likes + 1,
+    }
+
+    const res = await updateBlog(blogToUpdate)
+    setLikedBlog(res)
+  }
+
   return (
     <div style={blogStyle}>
       <div>
@@ -27,7 +38,7 @@ const Blog = ({ blog }) => {
       </div >
       <div style={showWhenVisible}>
         <div>{blog.url}</div>
-        <div>{blog.likes}<button>like</button></div>
+        <div>{likedBlog.likes}<button onClick={() => addLike(blog)}>like</button></div>
         <div>{blog.user.username}</div>
       </div>
     </div>

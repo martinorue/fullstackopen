@@ -59,9 +59,10 @@ blogsRouter.delete('/:id', async (request, response) => {//with express-async-er
 })
 
 blogsRouter.put('/:id', async (request, response) => {
-    const { title, author, url, likes } = request.body
+    const { user, title, author, url, likes } = request.body
 
     const blog = {
+        user: user.id,
         title: title,
         author: author,
         url: url,

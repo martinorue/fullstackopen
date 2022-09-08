@@ -15,11 +15,8 @@ const App = () => {
   const [message, setMessage] = useState(null)
   const [msjType, setMsjType] = useState()
 
-
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs(blogs)
-    )
+    getAllBlogs()
   }, [])
 
   useEffect(() => {
@@ -30,6 +27,11 @@ const App = () => {
       blogService.setToken(user.token)
     }
   }, [])
+
+  const getAllBlogs = async () => {
+    const blogs = await blogService.getAll()
+    setBlogs(blogs)
+  }
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -66,7 +68,6 @@ const App = () => {
     newBlogFormRef.current.toggleVisibility()
     try {
       const res = await blogService.create(blogObject)
-      console.log(res)
       setBlogs(blogs.concat(res))
       setMsjType('ok')
       setMessage(`added ${blogObject.title} by ${blogObject.author}`)
@@ -84,6 +85,20 @@ const App = () => {
 
   const newBlogFormRef = useRef()
 
+  const updateBlog = async (blogToUpdate) => {
+    try {
+      const res = await blogService.update(blogToUpdate.id, blogToUpdate)
+      setBlogs(blogs.map(blog => blog.id !== blogToUpdate.id ? blog : res))
+      return res
+    } catch (error) {
+      setMsjType('error')
+      setMessage(error.response.data.error)
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
+    }
+  }
+
   return (
     <div>
       <Notification message={message} msjType={msjType} />
@@ -98,7 +113,7 @@ const App = () => {
           <Togglable buttonLabel="new blog" ref={newBlogFormRef}>
             <NewBlogForm createBlog={addBlog} />
           </Togglable>
-          {blogs.map(blog => <Blog key={blog.id} blog={blog} />)}
+          {blogs.map(blog => <Blog key={blog.id} blog={blog} updateBlog={updateBlog} />)}
         </div>}
     </div>
   )
