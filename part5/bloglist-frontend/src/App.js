@@ -30,8 +30,10 @@ const App = () => {
 
   const getAllBlogs = async () => {
     const blogs = await blogService.getAll()
-    setBlogs(blogs)
+    setBlogs(blogs.sort(compareFn))
   }
+
+  const compareFn = (a, b) => b.likes - a.likes
 
   const handleSubmit = async (event) => {
     event.preventDefault()
