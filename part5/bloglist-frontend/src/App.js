@@ -101,6 +101,21 @@ const App = () => {
     }
   }
 
+  const deleteBlog = async (blogToRemove) => {
+    if (window.confirm(`Remove blog ${blogToRemove.title}! by ${blogToRemove.author}`)) {
+      try {
+        await blogService.remove(blogToRemove.id)
+        setBlogs(blogs.map(b => b.id !== blogToRemove.id))
+      } catch (error) {
+        setMsjType('error')
+        setMessage(error.response.data.error)
+        setTimeout(() => {
+          setMessage(null)
+        }, 5000)
+      }
+    }
+  }
+
   return (
     <div>
       <Notification message={message} msjType={msjType} />
@@ -115,7 +130,7 @@ const App = () => {
           <Togglable buttonLabel="new blog" ref={newBlogFormRef}>
             <NewBlogForm createBlog={addBlog} />
           </Togglable>
-          {blogs.map(blog => <Blog key={blog.id} blog={blog} updateBlog={updateBlog} />)}
+          {blogs.map(blog => <Blog key={blog.id} blog={blog} updateBlog={updateBlog} deleteBlog={deleteBlog} user={user} />)}
         </div>}
     </div>
   )

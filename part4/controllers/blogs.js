@@ -40,9 +40,10 @@ blogsRouter.post('/', middleware.tokenExtractor, middleware.userExtractor, async
     response.status(201).json(savedBlog)
 })
 
-blogsRouter.delete('/:id', async (request, response) => {//with express-async-errors
+blogsRouter.delete('/:id', middleware.tokenExtractor, middleware.userExtractor, async (request, response) => {//with express-async-errors
 
     const user = request.user
+    console.log(user)
     const blog = await Blog.findById(request.params.id)
 
     if (blog) {
