@@ -38,13 +38,15 @@ const Blog = ({ blog, updateBlog, deleteBlog, user }) => {
   return (
     <div style={blogStyle}>
       <div>
-        {blog.title} {blog.author}<button onClick={() => handleVisible()}>{infoVisible ? 'hide' : 'view'}</button>
+        {blog.title}, {blog.author}<button onClick={() => handleVisible()}>{infoVisible ? 'hide' : 'view'}</button>
       </div >
       <div style={showWhenVisible}>
         <div>{blog.url}</div>
         <div>{likedBlog.likes}<button onClick={() => addLike(blog)}>like</button></div>
         <div>{blog.user.username}</div>
-        {console.log(blog.user)}
+        {console.log(user.username)}
+        {console.log(blog.user.username)}
+        {console.log(user.username === blog.user.username)}
         {
           user.username === blog.user.username ?
             <button onClick={() => removeBlog(blog)}>remove</button>
