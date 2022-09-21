@@ -52,6 +52,5 @@ module.exports = {
         'react': {
             'version': 'detect'
         }
-    },
-    'editor.codeActionsOnSave': { 'source.fixAll.eslint': true }
+    }
 }
