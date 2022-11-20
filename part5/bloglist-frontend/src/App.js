@@ -15,6 +15,7 @@ const App = () => {
   const [message, setMessage] = useState(null)
   const [msjType, setMsjType] = useState()
 
+  console.log('prueba')
   useEffect(() => {
     getAllBlogs()
   }, [])
